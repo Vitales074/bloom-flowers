@@ -1,0 +1,28 @@
+{
+  "name": "Bloom — Авторские букеты",
+  "short_name": "Bloom",
+  "description": "Свежие цветы и авторские букеты с доставкой за 2 часа",
+  "lang": "ru",
+  "dir": "ltr",
+  "start_url": "./?pwa=1",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#faf6f0",
+  "theme_color": "#be6e6e",
+  "categories": ["shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
