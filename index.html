@@ -33,7 +33,8 @@
   --r:20px;--rp:100px
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--body);background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.6}
+html{background:var(--bg)}
+body{font-family:var(--body);background:transparent;color:var(--ink);overflow-x:hidden;line-height:1.6}
 ::selection{background:var(--rose-l);color:var(--rose-d)}
 img{display:block;max-width:100%}button{cursor:pointer;font-family:inherit;border:none;outline:none}a{text-decoration:none;color:inherit}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--rose-l);border-radius:3px}
@@ -61,9 +62,9 @@ nav a:hover{opacity:1}
 .h-actions{display:flex;align-items:center;gap:10px}
 .h-btn{background:none;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;color:inherit;opacity:.7;transition:opacity .2s,background .2s;font-size:1rem}
 .h-btn:hover{opacity:1;background:rgba(190,110,110,.1)}
-.cart-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--rp);border:1.5px solid currentColor;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:inherit;opacity:.8;transition:all .25s;position:relative}
-.cart-btn:hover{opacity:1;background:var(--rose);border-color:var(--rose);color:#fff}
-.cbadge{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:var(--rose);color:#fff;font-size:.62rem;font-weight:700;display:none;align-items:center;justify-content:center}
+.cart-btn{display:flex;align-items:center;gap:8px;padding:11px 22px;border-radius:var(--rp);border:1.5px solid transparent;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--rose);color:#fff;transition:all .25s;position:relative;box-shadow:0 6px 18px rgba(190,110,110,.4)}
+.cart-btn:hover{background:#a85050;box-shadow:0 9px 24px rgba(190,110,110,.55);transform:translateY(-1px)}
+.cbadge{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--gold);color:#fff;font-size:.64rem;font-weight:800;display:none;align-items:center;justify-content:center;border:2px solid var(--bg);box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .cbadge.show{display:flex}
 .burger{display:none;flex-direction:column;gap:5px;background:none;padding:6px;color:inherit}
 .burger span{display:block;width:22px;height:1.5px;background:currentColor;transition:all .3s;border-radius:1px}
@@ -92,8 +93,8 @@ nav a:hover{opacity:1}
 .hero-title em{font-style:italic;font-weight:500;background:linear-gradient(100deg,#ffd9a8,#f6b878 55%,#e89a6a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none}
 .hero-row{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
 .hero-desc{font-size:.85rem;color:rgba(255,255,255,.42);line-height:1.6;max-width:200px}
-.btn-hero{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:var(--rp);border:1.5px solid rgba(255,255,255,.35);color:#fff;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .3s;backdrop-filter:blur(4px)}
-.btn-hero:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.6)}
+.btn-hero{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:var(--rp);border:1.6px solid rgba(255,255,255,.85);color:#fff;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .3s;background:rgba(255,255,255,.16);box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.btn-hero:hover{background:#fff;color:var(--ink);border-color:#fff;transform:translateY(-1px)}
 .btn-hero-fill{background:var(--rose);border-color:var(--rose);box-shadow:0 8px 24px rgba(190,110,110,.4)}
 .btn-hero-fill:hover{background:#a85555;border-color:#a85555;box-shadow:0 12px 32px rgba(190,110,110,.5)}
 .hero-arrow{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .3s}
@@ -539,10 +540,53 @@ html.dark .bld-stack img{border-color:#1a1610}
   .pcard-add{background:var(--rose);border-color:var(--rose);color:#fff}
   .pcard-add.added{background:var(--sage);border-color:var(--sage)}
 }
+
+/* ===== LIVING BACKGROUND (aurora) ===== */
+.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.aurora span{position:absolute;display:block;border-radius:50%;filter:saturate(1.1);will-change:transform;mix-blend-mode:multiply}
+.aurora span:nth-child(1){width:62vmax;height:62vmax;left:-18vmax;top:-16vmax;background:radial-gradient(circle at 50% 50%,rgba(190,110,110,.30),rgba(190,110,110,0) 62%);animation:aur1 30s ease-in-out infinite}
+.aurora span:nth-child(2){width:55vmax;height:55vmax;right:-16vmax;top:8vmax;background:radial-gradient(circle at 50% 50%,rgba(200,152,10,.20),rgba(200,152,10,0) 62%);animation:aur2 38s ease-in-out infinite}
+.aurora span:nth-child(3){width:58vmax;height:58vmax;left:24vmax;bottom:-22vmax;background:radial-gradient(circle at 50% 50%,rgba(92,124,104,.20),rgba(92,124,104,0) 62%);animation:aur3 34s ease-in-out infinite}
+@keyframes aur1{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(8vmax,6vmax,0)}}
+@keyframes aur2{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-7vmax,9vmax,0)}}
+@keyframes aur3{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(6vmax,-8vmax,0)}}
+html.dark .aurora span{mix-blend-mode:screen}
+html.dark .aurora span:nth-child(1){background:radial-gradient(circle at 50% 50%,rgba(190,110,110,.22),rgba(190,110,110,0) 62%)}
+html.dark .aurora span:nth-child(2){background:radial-gradient(circle at 50% 50%,rgba(200,152,10,.14),rgba(200,152,10,0) 62%)}
+html.dark .aurora span:nth-child(3){background:radial-gradient(circle at 50% 50%,rgba(92,124,104,.16),rgba(92,124,104,0) 62%)}
+/* let the aurora glow through the light sections */
+.catalog-sec{background:transparent!important}
+.builder{background:linear-gradient(180deg,rgba(242,235,224,.45),transparent)!important}
+.story{background:rgba(255,255,255,.55)!important;backdrop-filter:blur(2px)}
+html.dark .story{background:rgba(21,18,13,.55)!important}
+.delivery{background:rgba(236,229,216,.5)!important}
+html.dark .delivery{background:rgba(26,22,16,.55)!important}
+.ticker{background:rgba(236,229,216,.7)}
+html.dark .ticker{background:rgba(26,22,16,.7)}
+
+/* ===== MOVING LIGHT BEAM (animated line) ===== */
+.beam{position:relative;height:2px;width:100%;background:linear-gradient(90deg,transparent,var(--border),transparent);overflow:hidden}
+.beam::after{content:'';position:absolute;top:0;left:-25%;width:25%;height:100%;background:linear-gradient(90deg,transparent,var(--rose) 45%,var(--gold) 55%,transparent);animation:beamRun 4.5s linear infinite;box-shadow:0 0 12px rgba(190,110,110,.6)}
+@keyframes beamRun{0%{left:-25%}100%{left:125%}}
+
+/* ===== 3D DEPTH on cards & frames ===== */
+.dlv-card,.bld-flower,.rv-card{position:relative}
+.dlv-card{background:linear-gradient(180deg,#fff,#fdfaf6);box-shadow:0 10px 30px rgba(60,40,10,.06),inset 0 1px 0 rgba(255,255,255,.8)}
+html.dark .dlv-card{background:linear-gradient(180deg,#221c15,#1c1711)}
+.dlv-card::before,.bld-preview::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(190,110,110,.5),rgba(200,152,10,.35),transparent 60%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.6;pointer-events:none}
+.sec-title em{position:relative}
+
+/* lighter aurora + no blur on phones for performance */
+@media(max-width:768px){
+  .aurora span{animation-duration:50s}
+  .story{backdrop-filter:none}
+}
+@media(prefers-reduced-motion:reduce){.aurora span,.beam::after{animation:none}}
   </style>
 </head>
 <body>
 
+<div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
 <div class="prog" id="prog"></div>
 <div class="cur-ring" id="curRing"></div>
 <div class="cur-dot" id="curDot"></div>
@@ -674,6 +718,8 @@ html.dark .bld-stack img{border-color:#1a1610}
   </div>
 </section>
 
+<div class="beam"></div>
+
 <!-- BOUQUET BUILDER -->
 <section class="builder" id="builder">
   <div class="container">
@@ -704,6 +750,8 @@ html.dark .bld-stack img{border-color:#1a1610}
     </div>
   </div>
 </section>
+
+<div class="beam"></div>
 
 <!-- STORY -->
 <section class="story" id="about">
