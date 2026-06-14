@@ -160,7 +160,7 @@ nav a:hover{opacity:1}
 .pcard:hover .pcard-wish,.pcard-wish.liked{opacity:1}
 .pcard-wish.liked{background:var(--rose);border-color:var(--rose)}
 .pcard-cat{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:4px}
-.pcard-name{font-family:var(--display);font-size:1.15rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:10px}
+.pcard-name{font-family:var(--display);font-size:1.28rem;font-weight:500;color:#fff;line-height:1.15;margin-bottom:10px;letter-spacing:.01em;text-shadow:0 1px 12px rgba(0,0,0,.4)}
 .pcard-pr{display:flex;align-items:baseline;gap:8px}
 .pcard-price{font-size:1.1rem;font-weight:600;color:#fff}
 .pcard-old{font-size:.78rem;color:rgba(255,255,255,.38);text-decoration:line-through}
@@ -222,7 +222,7 @@ nav a:hover{opacity:1}
 
 /* REVIEWS — dark */
 .reviews{padding:100px 0;background:var(--dark);color:#fff;position:relative;overflow:hidden}
-.reviews::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url('https://images.unsplash.com/photo-1620221759647-a53656905677?w=1600&h=900&fit=crop&auto=format&q=50') center/cover;opacity:.07;pointer-events:none}
+.reviews::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url('https://images.unsplash.com/photo-1620221759647-a53656905677?w=1000&h=600&fit=crop&auto=format&q=45') center/cover;opacity:.07;pointer-events:none}
 .rv-header{margin-bottom:64px}
 .rv-eyebrow{color:rgba(255,255,255,.4)}
 .rv-title{font-family:var(--hero);font-size:clamp(2.2rem,4.5vw,4rem);font-weight:600;color:#fff;line-height:1.02}
@@ -495,6 +495,33 @@ html.dark .ct-select{background:#211c15}
 .bld-clear:hover{border-color:var(--rose);color:var(--rose)}
 .bld-add{flex:1;padding:13px 18px;border-radius:var(--rp);background:var(--ink);color:var(--bg);font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:all .25s}
 .bld-add:hover{background:var(--rose);color:#fff;box-shadow:0 10px 26px rgba(190,110,110,.4)}
+
+/* ===== MOBILE PERFORMANCE ===== */
+@media(max-width:768px){
+  /* kill expensive paints that cause jank on phones */
+  body::after{display:none}
+  header.scrolled{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(250,246,240,.97)}
+  html.dark header.scrolled{background:rgba(19,16,12,.97)}
+  .mmenu{backdrop-filter:none;background:rgba(250,246,240,.99)}
+  html.dark .mmenu{background:rgba(19,16,12,.99)}
+  .hero-card,.pcard-wish,.pcard-add,.btn-hero,.cart-ov,.modal-ov,.qv-ov{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .pcard-wish{background:rgba(0,0,0,.34)}
+  .pcard-add{background:rgba(255,255,255,.16)}
+  .cart-ov,.modal-ov,.qv-ov{background:rgba(0,0,0,.55)}
+  .hero-bg{will-change:auto}
+  .reviews::before{display:none}
+  .pcard:hover{box-shadow:0 14px 36px rgba(0,0,0,.14)}
+  .dlv-card:hover{transform:none}
+}
+/* tactile press feedback on touch devices — feels native */
+@media(hover:none){
+  .pcard,.btn-hero,.btn-hero-fill,.cart-checkout-btn,.pcard-add,.qv-add,.cat-pill,.fsub,.bld-add,.bld-flower,.cart-btn,.dlv-card{transition:transform .12s ease, box-shadow .2s ease, background .2s ease}
+  .pcard:active,.dlv-card:active{transform:scale(.98)}
+  .btn-hero:active,.btn-hero-fill:active,.cart-checkout-btn:active,.pcard-add:active,.qv-add:active,.cat-pill:active,.fsub:active,.bld-add:active,.bld-flower:active,.cart-btn:active{transform:scale(.95)}
+  /* invite the tap: make the buy button on cards solid & warm */
+  .pcard-add{background:var(--rose);border-color:var(--rose);color:#fff}
+  .pcard-add.added{background:var(--sage);border-color:var(--sage)}
+}
   </style>
 </head>
 <body>
@@ -534,7 +561,7 @@ html.dark .ct-select{background:#211c15}
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-bg" id="heroBg" style="background-image:url('https://images.unsplash.com/photo-1548094967-e25a127d1f6d?w=1920&h=1200&fit=crop&auto=format&q=85')"></div>
+  <div class="hero-bg" id="heroBg" style="background-image:url('https://images.unsplash.com/photo-1548094967-e25a127d1f6d?w=1280&h=1600&fit=crop&auto=format&q=72')"></div>
   <div class="hero-vig"></div>
   <div class="hero-vig2"></div>
   <div class="petals" id="petals"></div>
@@ -723,7 +750,7 @@ html.dark .ct-select{background:#211c15}
 
 <!-- CTA -->
 <section class="cta-sec">
-  <div class="cta-bg" style="background-image:url('https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?w=1600&h=900&fit=crop&auto=format&q=60')"></div>
+  <div class="cta-bg" style="background-image:url('https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?w=1100&h=700&fit=crop&auto=format&q=58')"></div>
   <div class="cta-overlay"></div>
   <div class="container">
     <div class="cta-inner rv">
@@ -885,7 +912,7 @@ function cardHTML(p, cls=''){
   return `<div class="pcard${cls?` ${cls}`:''}" data-id="${p.id}" onclick="openQuick(${p.id},event)">
     ${b}
     <button class="pcard-wish${inC?' liked':''}" onclick="toggleWish(this)">🤍</button>
-    <img class="pcard-img" src="${p.img}" alt="${p.n}" loading="lazy" onerror="this.style.display='none'">
+    <img class="pcard-img" src="${p.img}" alt="${p.n}" loading="lazy" decoding="async" onerror="this.style.display='none'">
     <div class="pcard-body">
       <div class="pcard-cat">${p.catN}</div>
       <div class="pcard-name">${p.n}</div>
@@ -1161,17 +1188,22 @@ function initTilt(){
   });
 }
 
-// PARALLAX HERO
-window.addEventListener('scroll',()=>{
+// SCROLL — rAF-batched, parallax only on desktop
+const _hdr=document.getElementById('hdr'),_bg=document.getElementById('heroBg'),
+      _stb=document.getElementById('stb'),_prog=document.getElementById('prog');
+const _wide=window.matchMedia('(min-width:900px)').matches
+  && !window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+let _ticking=false,_scrolled=null;
+function onScroll(){
   const y=window.scrollY;
-  const bg=document.getElementById('heroBg');
-  if(bg) bg.style.transform=`translateY(${y*.35}px)`;
-  const hdr=document.getElementById('hdr');
-  if(y>80){hdr.classList.add('scrolled');hdr.classList.remove('hero-top');}
-  else{hdr.classList.remove('scrolled');hdr.classList.add('hero-top');}
-  document.getElementById('stb').classList.toggle('show',y>500);
-  document.getElementById('prog').style.width=(y/(document.body.scrollHeight-window.innerHeight)*100)+'%';
-},{passive:true});
+  if(_wide&&_bg) _bg.style.transform=`translate3d(0,${y*.3}px,0)`;
+  const sc=y>80;
+  if(sc!==_scrolled){_scrolled=sc;_hdr.classList.toggle('scrolled',sc);_hdr.classList.toggle('hero-top',!sc);}
+  _stb.classList.toggle('show',y>500);
+  _prog.style.width=(y/(document.body.scrollHeight-window.innerHeight)*100)+'%';
+  _ticking=false;
+}
+window.addEventListener('scroll',()=>{if(!_ticking){_ticking=true;requestAnimationFrame(onScroll);}},{passive:true});
 
 // REVEAL
 function initReveal(){
