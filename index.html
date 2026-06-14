@@ -135,10 +135,11 @@ nav a:hover{opacity:1}
 .sec-title{font-family:var(--hero);font-size:clamp(2.2rem,5vw,4.4rem);font-weight:600;line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
 .sec-title em{font-style:italic;font-weight:500;color:var(--rose)}
 .sec-title em{font-style:italic}
-.sec-link{font-size:.78rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;white-space:nowrap;transition:color .2s;flex-shrink:0}
-.sec-link::after{content:'→';transition:transform .2s}
-.sec-link:hover{color:var(--rose)}
+.sec-link{font-size:.74rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);display:inline-flex;align-items:center;gap:9px;white-space:nowrap;transition:all .25s;flex-shrink:0;padding:12px 22px;border:1.5px solid var(--border);border-radius:var(--rp)}
+.sec-link::after{content:'→';transition:transform .25s}
+.sec-link:hover{color:#fff;background:var(--rose);border-color:var(--rose)}
 .sec-link:hover::after{transform:translateX(4px)}
+@media(max-width:600px){.sec-head{flex-direction:column;align-items:flex-start;gap:20px}}
 .bento{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;height:620px}
 .bento-right{display:grid;grid-template-rows:1fr 1fr;gap:16px}
 @media(max-width:900px){.bento{grid-template-columns:1fr;height:auto}.bento-right{grid-template-columns:1fr 1fr;grid-template-rows:none}}
@@ -468,32 +469,48 @@ html.dark .ct-select{background:#211c15}
 
 /* BOUQUET BUILDER */
 .builder{padding:92px 0;background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%)}
-.bld-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:start}
-@media(max-width:860px){.bld-grid{grid-template-columns:1fr;gap:24px}}
-.bld-palette{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sec-sub{font-size:.95rem;color:var(--muted);margin-top:14px;max-width:440px;line-height:1.6}
+.bld-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:start}
+@media(max-width:860px){.bld-grid{grid-template-columns:1fr;gap:22px}}
+.bld-palette{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 @media(max-width:560px){.bld-palette{grid-template-columns:repeat(2,1fr)}}
-.bld-flower{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;transition:border-color .2s,transform .2s,box-shadow .2s}
-.bld-flower:hover{border-color:var(--rose-l);transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.07)}
-.bf-emoji{font-size:2rem;margin-bottom:6px;line-height:1}
-.bf-name{font-size:.86rem;font-weight:600;color:var(--ink)}
-.bf-price{font-size:.76rem;color:var(--muted);margin-bottom:10px}
-.bf-step{display:flex;align-items:center;justify-content:center;gap:10px}
-.bf-step button{width:26px;height:26px;border-radius:50%;background:var(--bg2);color:var(--ink);font-size:1rem;font-weight:600;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
+.bld-flower{background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:14px 12px 16px;text-align:center;transition:border-color .2s,transform .2s,box-shadow .2s}
+.bld-flower:hover{border-color:var(--rose-l);transform:translateY(-3px);box-shadow:0 16px 38px rgba(0,0,0,.08)}
+.bld-flower.picked{border-color:var(--rose);box-shadow:0 14px 32px rgba(190,110,110,.16)}
+.bf-photo{position:relative;width:100%;aspect-ratio:1;border-radius:14px;overflow:hidden;margin-bottom:11px}
+.bf-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.bf-q{position:absolute;top:7px;right:7px;min-width:23px;height:23px;padding:0 6px;border-radius:12px;background:var(--rose);color:#fff;font-size:.74rem;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.6);transition:all .2s var(--ease)}
+.bf-q.on{opacity:1;transform:scale(1)}
+.bf-name{font-size:.9rem;font-weight:600;color:var(--ink);line-height:1.2}
+.bf-price{font-size:.74rem;color:var(--muted);margin-bottom:12px}
+.bf-step{display:flex;align-items:center;justify-content:center;gap:8px}
+.bf-step button{width:30px;height:30px;border-radius:50%;background:var(--bg2);color:var(--ink);font-size:1.1rem;font-weight:600;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
 .bf-step button:hover{background:var(--rose);color:#fff}
-.bf-step span{min-width:18px;font-weight:700;font-size:.9rem;color:var(--ink)}
-.bld-preview{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:24px;position:sticky;top:90px}
-.bld-vase{min-height:210px;border-radius:14px;background:linear-gradient(180deg,var(--rose-l),var(--bg2));display:flex;align-items:center;justify-content:center;padding:22px;margin-bottom:20px;position:relative;overflow:hidden}
-.bld-empty{color:var(--muted);font-size:.9rem;text-align:center}
-.bld-flowers{display:flex;flex-wrap:wrap;gap:2px 0;justify-content:center;align-items:flex-end}
-.bld-stem{font-size:1.9rem;animation:stemIn .35s var(--ease);line-height:1}
-@keyframes stemIn{from{opacity:0;transform:translateY(12px) scale(.4)}to{opacity:1;transform:none}}
-.bld-summary{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)}
-.bld-count{font-size:.9rem;color:var(--muted)}
-.bld-total{font-family:var(--hero);font-size:1.85rem;font-weight:600;color:var(--rose)}
+.bf-step span{min-width:20px;font-weight:700;font-size:.92rem;color:var(--ink)}
+.bld-preview{background:var(--bg);border:1px solid var(--border);border-radius:22px;padding:22px;position:sticky;top:88px;box-shadow:0 20px 50px rgba(0,0,0,.05)}
+.bld-stage{min-height:150px;border-radius:16px;background:radial-gradient(120% 100% at 50% 0%,var(--rose-l),var(--bg2));display:flex;align-items:center;justify-content:center;padding:24px;margin-bottom:16px;position:relative;overflow:hidden;transition:background .4s}
+.bld-stage.has{background:radial-gradient(120% 120% at 50% 0%,var(--rose-l),var(--cream))}
+.bld-empty{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:.9rem;text-align:center;line-height:1.5}
+.bld-empty-ic{font-size:2.2rem;opacity:.7}
+.bld-stack{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;padding-left:16px}
+.bld-stack img{width:54px;height:54px;border-radius:50%;object-fit:cover;border:3px solid var(--bg);margin-left:-16px;box-shadow:0 4px 12px rgba(0,0,0,.12);animation:bloomIn .35s var(--ease)}
+html.dark .bld-stack img{border-color:#1a1610}
+.bld-more{width:54px;height:54px;border-radius:50%;margin-left:-16px;background:var(--rose);color:#fff;font-weight:700;font-size:.92rem;display:flex;align-items:center;justify-content:center;border:3px solid var(--bg);box-shadow:0 4px 12px rgba(0,0,0,.12)}
+@keyframes bloomIn{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+.bld-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;max-height:168px;overflow-y:auto}
+.bld-list:empty{display:none}
+.bld-row{display:flex;align-items:center;gap:11px;font-size:.88rem}
+.bld-row img{width:34px;height:34px;border-radius:9px;object-fit:cover;flex-shrink:0}
+.blr-n{color:var(--ink);font-weight:500}
+.blr-q{color:var(--muted);font-size:.82rem}
+.blr-p{margin-left:auto;color:var(--ink);font-weight:600}
+.bld-summary{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;padding-top:16px;border-top:1px solid var(--border)}
+.bld-count{font-size:.86rem;color:var(--muted)}
+.bld-total{font-family:var(--hero);font-size:1.9rem;font-weight:600;color:var(--rose)}
 .bld-actions{display:flex;gap:10px}
-.bld-clear{padding:13px 18px;border-radius:var(--rp);border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:all .2s}
+.bld-clear{padding:14px 18px;border-radius:var(--rp);border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.76rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:all .2s}
 .bld-clear:hover{border-color:var(--rose);color:var(--rose)}
-.bld-add{flex:1;padding:13px 18px;border-radius:var(--rp);background:var(--ink);color:var(--bg);font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:all .25s}
+.bld-add{flex:1;padding:14px 18px;border-radius:var(--rp);background:var(--ink);color:var(--bg);font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:all .25s}
 .bld-add:hover{background:var(--rose);color:#fff;box-shadow:0 10px 26px rgba(190,110,110,.4)}
 
 /* ===== MOBILE PERFORMANCE ===== */
@@ -608,7 +625,8 @@ html.dark .ct-select{background:#211c15}
     <div class="sec-head rv">
       <div>
         <span class="eyebrow">Хиты сезона</span>
-        <h2 class="sec-title">Лучшие<br><em>предложения</em></h2>
+        <h2 class="sec-title">Лучшие <em>предложения</em></h2>
+        <p class="sec-sub">Самые любимые букеты наших клиентов этой недели</p>
       </div>
       <a href="#catalog" class="sec-link">Весь каталог</a>
     </div>
@@ -622,7 +640,8 @@ html.dark .ct-select{background:#211c15}
     <div class="sec-head rv">
       <div>
         <span class="eyebrow">Каталог</span>
-        <h2 class="sec-title">Свежие цветы<br><em>для вас</em></h2>
+        <h2 class="sec-title">Свежие цветы <em>для вас</em></h2>
+        <p class="sec-sub">Собираем вручную в день заказа и доставляем за 2 часа</p>
       </div>
     </div>
     <div class="cat-pills">
@@ -662,17 +681,19 @@ html.dark .ct-select{background:#211c15}
       <div>
         <span class="eyebrow">Своими руками</span>
         <h2 class="sec-title">Соберите <em>свой букет</em></h2>
+        <p class="sec-sub">Выбирайте цветы по штучке — мы соберём и упакуем вручную</p>
       </div>
     </div>
     <div class="bld-grid">
       <div class="bld-palette rv" id="bldPalette"></div>
       <div class="bld-preview rv d1">
-        <div class="bld-vase">
-          <div class="bld-empty" id="bldEmpty">Выберите цветы слева,<br>и букет соберётся здесь 🌿</div>
-          <div class="bld-flowers" id="bldFlowers"></div>
+        <div class="bld-stage" id="bldStage">
+          <div class="bld-empty" id="bldEmpty"><span class="bld-empty-ic">💐</span><span>Добавьте цветы — и здесь<br>появится ваш букет</span></div>
+          <div class="bld-stack" id="bldStack"></div>
         </div>
+        <div class="bld-list" id="bldList"></div>
         <div class="bld-summary">
-          <div class="bld-count"><span id="bldCount">0</span> стеблей</div>
+          <div class="bld-count"><span id="bldCount">0</span> стеблей в букете</div>
           <div class="bld-total"><span id="bldTotal">0</span> ₽</div>
         </div>
         <div class="bld-actions">
@@ -1063,41 +1084,57 @@ function qvSwap(el,src){document.getElementById('qvImg').src=src;document.queryS
 function addQuick(btn){if(!qvId)return;addToCart(qvId,null);btn.textContent='✓ Добавлено в корзину';btn.style.background='var(--sage)';btn.style.color='#fff';}
 
 // BOUQUET BUILDER
+const FIMG=id=>`https://images.unsplash.com/photo-${id}?w=200&h=200&fit=crop&auto=format&q=72`;
 const FLOWERS=[
-  {id:1,e:'🌹',n:'Роза',price:250},
-  {id:2,e:'🌷',n:'Тюльпан',price:120},
-  {id:3,e:'🌸',n:'Пион',price:400},
-  {id:4,e:'🌻',n:'Подсолнух',price:200},
-  {id:5,e:'🌼',n:'Ромашка',price:90},
-  {id:6,e:'🌺',n:'Гербера',price:160},
-  {id:7,e:'🪻',n:'Гиацинт',price:180},
-  {id:8,e:'🍃',n:'Зелень',price:80},
+  {id:1,n:'Алая роза',  price:250,img:'1523693916903-027d144a2b7d'},
+  {id:2,n:'Тюльпан',    price:120,img:'1586968295564-92fd7572718b'},
+  {id:3,n:'Пион',       price:400,img:'1539622230226-3d4eb483b3f2'},
+  {id:4,n:'Подсолнух',  price:200,img:'1601884928885-92a922f7962f'},
+  {id:5,n:'Полевые',    price:90, img:'1556712691-5c39e0e32a8e'},
+  {id:6,n:'Розовый микс',price:160,img:'1582794543139-8ac9cb0f7b11'},
+  {id:7,n:'Белая роза', price:180,img:'1559779080-6970e0186790'},
+  {id:8,n:'Зелень',     price:80, img:'1614594975525-e45190c55d0b'},
 ];
 const bld={};
 function renderBuilder(){
   const box=document.getElementById('bldPalette'); if(!box)return;
-  box.innerHTML=FLOWERS.map(f=>`<div class="bld-flower">
-    <div class="bf-emoji">${f.e}</div>
+  box.innerHTML=FLOWERS.map(f=>`<div class="bld-flower" id="bf${f.id}">
+    <div class="bf-photo"><img src="${FIMG(f.img)}" alt="${f.n}" decoding="async"><span class="bf-q" id="bfb${f.id}">0</span></div>
     <div class="bf-name">${f.n}</div>
-    <div class="bf-price">${f.price} ₽</div>
-    <div class="bf-step"><button onclick="bldStem(${f.id},-1)">−</button><span id="bfq${f.id}">0</span><button onclick="bldStem(${f.id},1)">+</button></div>
+    <div class="bf-price">${f.price} ₽/шт</div>
+    <div class="bf-step"><button onclick="bldStem(${f.id},-1)" aria-label="убрать">−</button><span id="bfq${f.id}">0</span><button onclick="bldStem(${f.id},1)" aria-label="добавить">+</button></div>
   </div>`).join('');
 }
 function bldStem(id,d){
   bld[id]=Math.max(0,Math.min(99,(bld[id]||0)+d));
   if(!bld[id])delete bld[id];
   const q=document.getElementById('bfq'+id); if(q)q.textContent=bld[id]||0;
+  const b=document.getElementById('bfb'+id); if(b){b.textContent=bld[id]||0;b.classList.toggle('on',!!bld[id]);}
+  const card=document.getElementById('bf'+id); if(card)card.classList.toggle('picked',!!bld[id]);
   bldRender();
 }
 function bldRender(){
-  let count=0,total=0,html='';
-  FLOWERS.forEach(f=>{const q=bld[f.id]||0;count+=q;total+=q*f.price;for(let i=0;i<q;i++)html+=`<span class="bld-stem">${f.e}</span>`;});
-  document.getElementById('bldFlowers').innerHTML=html;
-  document.getElementById('bldEmpty').style.display=count?'none':'block';
+  const chosen=FLOWERS.filter(f=>bld[f.id]);
+  const count=chosen.reduce((s,f)=>s+bld[f.id],0);
+  const total=chosen.reduce((s,f)=>s+bld[f.id]*f.price,0);
+  // visual stack — one bloom per stem, capped
+  const stems=[]; chosen.forEach(f=>{for(let i=0;i<bld[f.id];i++)stems.push(f);});
+  const cap=9, shown=stems.slice(0,cap), extra=stems.length-shown.length;
+  document.getElementById('bldStack').innerHTML =
+    shown.map(f=>`<img src="${FIMG(f.img)}" alt="">`).join('') + (extra>0?`<span class="bld-more">+${extra}</span>`:'');
+  // composition list
+  document.getElementById('bldList').innerHTML = chosen.map(f=>
+    `<div class="bld-row"><img src="${FIMG(f.img)}" alt=""><span class="blr-n">${f.n}</span><span class="blr-q">×${bld[f.id]}</span><span class="blr-p">${(bld[f.id]*f.price).toLocaleString('ru')} ₽</span></div>`).join('');
+  document.getElementById('bldEmpty').style.display=count?'none':'flex';
+  document.getElementById('bldStage').classList.toggle('has',!!count);
   document.getElementById('bldCount').textContent=count;
   document.getElementById('bldTotal').textContent=total.toLocaleString('ru');
 }
-function bldClear(){Object.keys(bld).forEach(k=>delete bld[k]);FLOWERS.forEach(f=>{const q=document.getElementById('bfq'+f.id);if(q)q.textContent='0';});bldRender();}
+function bldClear(){
+  Object.keys(bld).forEach(k=>delete bld[k]);
+  FLOWERS.forEach(f=>{['bfq'+f.id,'bfb'+f.id].forEach(i=>{const e=document.getElementById(i);if(e){e.textContent='0';e.classList&&e.classList.remove('on');}});const c=document.getElementById('bf'+f.id);if(c)c.classList.remove('picked');});
+  bldRender();
+}
 let customSeq=CUSTOM.reduce((m,c)=>Math.max(m,c.id),9000);
 function bldAdd(){
   const count=Object.values(bld).reduce((a,b)=>a+b,0);
