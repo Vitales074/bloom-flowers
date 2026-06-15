@@ -582,6 +582,28 @@ html.dark .dlv-card{background:linear-gradient(180deg,#221c15,#1c1711)}
   .story{backdrop-filter:none}
 }
 @media(prefers-reduced-motion:reduce){.aurora span,.beam::after{animation:none}}
+
+/* ===== ANIMATED GLOW FRAME (running light border) ===== */
+@property --gang{syntax:'<angle>';initial-value:0deg;inherits:false}
+.glow-frame{position:relative}
+.glow-frame::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.7px;background:conic-gradient(from var(--gang,0deg),transparent 0deg,rgba(190,110,110,.95) 40deg,rgba(255,220,160,1) 72deg,rgba(190,110,110,.95) 104deg,transparent 150deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:gangSpin 4.5s linear infinite;pointer-events:none;z-index:3}
+@keyframes gangSpin{to{--gang:360deg}}
+@media(prefers-reduced-motion:reduce){.glow-frame::after{animation:none;opacity:.5}}
+
+/* ===== ELEGANT SHIMMERING UNDERLINE on accent words ===== */
+.sec-title em{position:relative;display:inline-block}
+.sec-title em::after{content:'';position:absolute;left:0;right:0;bottom:-.04em;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--rose),var(--gold) 50%,var(--rose));background-size:200% 100%;animation:ulShim 4.5s linear infinite;opacity:.9}
+@keyframes ulShim{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){.sec-title em::after{animation:none}}
+
+/* ===== fix empty bottom spacing on mobile ===== */
+@media(max-width:768px){
+  .cta-sec{padding:64px 0}
+  footer{padding:46px 0 24px}
+  .reviews{padding:70px 0}
+  .story{padding:72px 0}
+  .delivery{padding:64px 0}
+}
   </style>
 </head>
 <body>
@@ -640,7 +662,7 @@ html.dark .dlv-card{background:linear-gradient(180deg,#221c15,#1c1711)}
         <p class="hero-desc">Свежие цветы с гарантией качества</p>
       </div>
     </div>
-    <div class="hero-card" id="heroCard">
+    <div class="hero-card glow-frame" id="heroCard">
       <div class="hero-card-img">
         <img src="https://images.unsplash.com/photo-1539622230226-3d4eb483b3f2?w=600&h=360&fit=crop&auto=format&q=85" alt="Пионы">
       </div>
@@ -782,7 +804,7 @@ html.dark .dlv-card{background:linear-gradient(180deg,#221c15,#1c1711)}
     <div class="sec-head rv" style="margin-bottom:48px">
       <div><span class="eyebrow">Удобно</span><h2 class="sec-title">Доставка<br>и <em>оплата</em></h2></div>
     </div>
-    <div class="countdown rv">
+    <div class="countdown rv glow-frame">
       <div class="cd-label">⏰ Закажите сегодня — <b>доставим уже через 2 часа.</b> До конца приёма заказов:</div>
       <div class="cd-timer" id="cdTimer"></div>
     </div>
@@ -827,7 +849,7 @@ html.dark .dlv-card{background:linear-gradient(180deg,#221c15,#1c1711)}
       <h2 class="cta-title">Закажите цветы<br><em>прямо сейчас</em></h2>
       <p class="cta-sub">Бесплатная доставка при заказе от 3 000 ₽. Свежесть цветов гарантирована.</p>
       <div class="cta-btns">
-        <a href="#catalog" class="btn-white magnetic">Выбрать букет</a>
+        <a href="#catalog" class="btn-white magnetic glow-frame">Выбрать букет</a>
         <a href="https://wa.me/79001234567" target="_blank" class="btn-ghost-w magnetic">💬 WhatsApp</a>
       </div>
     </div>
