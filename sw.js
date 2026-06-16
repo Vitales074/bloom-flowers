@@ -1,5 +1,5 @@
 // Bloom PWA service worker
-const CACHE = 'bloom-v7';
+const CACHE = 'bloom-v8';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

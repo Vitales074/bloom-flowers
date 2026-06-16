@@ -605,6 +605,29 @@ html.dark .dlv-card{background:linear-gradient(180deg,#221c15,#1c1711)}
   .delivery{padding:64px 0}
 }
 
+/* ===== WISHLIST BUTTON ===== */
+.wish-btn{position:relative;background:none;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:inherit;opacity:.85;font-size:1.35rem;line-height:1;transition:opacity .2s,background .2s,transform .25s}
+.wish-btn:hover{opacity:1;background:rgba(190,110,110,.12);transform:scale(1.1)}
+.wish-btn:active{transform:scale(.92)}
+.wbadge{position:absolute;top:-1px;right:-1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rose);color:#fff;font-size:.6rem;font-weight:800;display:none;align-items:center;justify-content:center;border:2px solid var(--bg)}
+.wbadge.show{display:flex}
+.pcard-wish.liked{transition:transform .25s var(--ease)}
+.pcard-wish.liked{animation:wishPop .4s var(--ease)}
+@keyframes wishPop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+
+/* ===== PROMO CODE ===== */
+.cart-promo{display:flex;gap:8px;margin-bottom:14px}
+.cart-promo input{flex:1;min-width:0;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:var(--body);font-size:.85rem;font-weight:600;letter-spacing:.04em;color:var(--ink);background:var(--bg);text-transform:uppercase;outline:none;transition:border-color .2s}
+.cart-promo input:focus{border-color:var(--rose)}
+.cart-promo input::placeholder{text-transform:none;font-weight:400;color:var(--muted)}
+.cart-promo button{padding:11px 18px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:.74rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;transition:all .2s;flex-shrink:0}
+.cart-promo button:hover{background:var(--rose);color:#fff}
+.cart-disc-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;font-size:.88rem}
+.cart-disc-row .cd-l{color:var(--sage);font-weight:600;display:flex;align-items:center;gap:6px}
+.cart-disc-row .cd-v{color:var(--sage);font-weight:700}
+.promo-hint{font-size:.72rem;color:var(--muted);margin-bottom:14px;text-align:center}
+.promo-hint b{color:var(--rose);cursor:pointer}
+
 /* ===== CINEMATIC INTRO LOADER ===== */
 .intro{position:fixed;inset:0;z-index:10000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transition:opacity .8s ease,visibility .8s}
 .intro.gone{opacity:0;visibility:hidden;pointer-events:none}
@@ -670,6 +693,7 @@ html.dark .proof{background:#1c1711;border-color:rgba(255,255,255,.08)}
   </ul></nav>
   <div class="h-actions">
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Сменить тему">🌙</button>
+    <button class="wish-btn" id="wishBtn" onclick="openWishlist()" title="Избранное" aria-label="Избранное">♡<span class="wbadge" id="wbadge">0</span></button>
     <button class="cart-btn magnetic" onclick="openCart()">
       <span>🛒</span><span class="cart-text" id="ctxt">Корзина</span>
       <span class="cbadge" id="cbadge">0</span>
@@ -956,6 +980,15 @@ html.dark .proof{background:#1c1711;border-color:rgba(255,255,255,.08)}
       <div class="cart-free-txt" id="cartFreeTxt"></div>
       <div class="cart-free-bar"><div class="cart-free-fill" id="cartFreeFill"></div></div>
     </div>
+    <div class="cart-promo">
+      <input type="text" id="promoInp" placeholder="Промокод" maxlength="14" onkeydown="if(event.key==='Enter')applyPromo()">
+      <button onclick="applyPromo()">Применить</button>
+    </div>
+    <div class="promo-hint" id="promoHint">Попробуйте код <b onclick="document.getElementById('promoInp').value='WELCOME';applyPromo()">WELCOME</b> — скидка 10%</div>
+    <div class="cart-disc-row" id="cartDiscRow" style="display:none">
+      <span class="cd-l">🎟 Скидка <span id="cartDiscCode"></span></span>
+      <span class="cd-v" id="cartDiscVal">0 ₽</span>
+    </div>
     <div class="cart-total-row">
       <span class="cart-total-lbl">Итого:</span>
       <span class="cart-total-val" id="cartTotalVal">0 ₽</span>
@@ -979,8 +1012,8 @@ html.dark .proof{background:#1c1711;border-color:rgba(255,255,255,.08)}
     </div>
     <div class="modal-ok" id="modalOk">
       <div class="modal-ok-icon">🎉</div>
-      <h3>Заказ принят!</h3>
-      <p>Наш флорист позвонит вам в течение 5 минут для подтверждения.</p>
+      <h3>Заказ оформлен!</h3>
+      <p>Мы открыли WhatsApp с деталями заказа — отправьте сообщение, и флорист подтвердит его в течение 5 минут. Если WhatsApp не открылся, позвоните нам.</p>
     </div>
   </div>
 </div>
@@ -1045,20 +1078,24 @@ const RV = [
 ];
 
 let cart = JSON.parse(localStorage.getItem('bloomCart')||'[]');
+let wish = JSON.parse(localStorage.getItem('bloomWish')||'[]');
 let curCat = 'all';
 let curSort = 'pop';
 let curMaxPrice = 9000;
 const CUSTOM = JSON.parse(localStorage.getItem('bloomCustom')||'[]');
 function findP(id){return P.find(p=>p.id===id)||CUSTOM.find(p=>p.id===id);}
+const PROMOS={BLOOM10:{off:.10,label:'−10%'},LOVE15:{off:.15,label:'−15%'},PIONS20:{off:.20,label:'−20%'},WELCOME:{off:.10,label:'−10%'}};
+let promo=localStorage.getItem('bloomPromo')||'';
 
 function cardHTML(p, cls=''){
   const b = p.badge ? `<span class="pcard-badge ${p.badge}">${p.badge==='hit'?'🔥 Хит':p.badge==='new'?'✨ Новинка':'🏷 Скидка'}</span>` : '';
   const old = p.old ? `<span class="pcard-old">${p.old.toLocaleString('ru')} ₽</span>` : '';
   const inC = cart.find(c=>c.id===p.id);
+  const liked = wish.includes(p.id);
   const stock = p.badge==='hit' ? `<div class="pcard-stock"><i></i>Осталось ${(p.id%3)+2} шт</div>` : '';
   return `<div class="pcard${cls?` ${cls}`:''}" data-id="${p.id}" onclick="openQuick(${p.id},event)">
     ${b}
-    <button class="pcard-wish${inC?' liked':''}" onclick="toggleWish(this)">🤍</button>
+    <button class="pcard-wish${liked?' liked':''}" onclick="event.stopPropagation();toggleWish(${p.id},this)">${liked?'❤️':'🤍'}</button>
     <img class="pcard-img" src="${p.img}" alt="${p.n}" loading="lazy" decoding="async" onerror="this.style.display='none'">
     <div class="pcard-body">
       <div class="pcard-cat">${p.catN}</div>
@@ -1082,7 +1119,8 @@ function renderBento(){
 
 function renderProducts(){
   const g = document.getElementById('pgrid');
-  let list = (curCat==='all' ? P : P.filter(p=>p.cat===curCat)).filter(p=>p.price<=curMaxPrice);
+  let base = curCat==='all' ? P : curCat==='wish' ? P.filter(p=>wish.includes(p.id)) : P.filter(p=>p.cat===curCat);
+  let list = base.filter(p=>p.price<=curMaxPrice);
   const rank={hit:0,new:1,sale:2};
   if(curSort==='asc') list=[...list].sort((a,b)=>a.price-b.price);
   else if(curSort==='desc') list=[...list].sort((a,b)=>b.price-a.price);
@@ -1090,7 +1128,9 @@ function renderProducts(){
   else list=[...list].sort((a,b)=>(rank[a.badge]??9)-(rank[b.badge]??9));
   const cnt=document.getElementById('ctCount');
   if(cnt){const n=list.length;cnt.textContent=n+' '+(n%10===1&&n%100!==11?'товар':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'товара':'товаров');}
-  if(!list.length){ g.innerHTML='<div class="empty"><div class="empty-icon">🌱</div><p>Нет товаров под выбранные фильтры</p></div>'; return; }
+  if(!list.length){ g.innerHTML = curCat==='wish'
+      ? '<div class="empty"><div class="empty-icon">🤍</div><p>В избранном пока пусто</p><p style="font-size:.82rem;margin-top:4px;color:var(--muted)">Нажмите ♡ на понравившемся букете</p></div>'
+      : '<div class="empty"><div class="empty-icon">🌱</div><p>Нет товаров под выбранные фильтры</p></div>'; return; }
   g.innerHTML = list.map(p => cardHTML(p)).join('');
   initTilt(); initReveal();
 }
@@ -1147,13 +1187,29 @@ function renderCartBody(){
       <button class="ci-del" onclick="removeFromCart(${p.id})">✕</button>
     </div>`;}).join('');
   const sum=cartSum();
-  document.getElementById('cartTotalVal').textContent=sum.toLocaleString('ru')+' ₽';
+  const disc = PROMOS[promo] ? Math.round(sum*PROMOS[promo].off) : 0;
+  const discRow=document.getElementById('cartDiscRow'),hint=document.getElementById('promoHint');
+  if(disc>0){
+    discRow.style.display='flex';
+    document.getElementById('cartDiscCode').textContent=promo;
+    document.getElementById('cartDiscVal').textContent='−'+disc.toLocaleString('ru')+' ₽';
+    if(hint)hint.style.display='none';
+    const inp=document.getElementById('promoInp'); if(inp&&!inp.value)inp.value=promo;
+  } else { discRow.style.display='none'; if(hint)hint.style.display='block'; }
+  document.getElementById('cartTotalVal').textContent=(sum-disc).toLocaleString('ru')+' ₽';
   const FREE=3000,free=document.getElementById('cartFree'),txt=document.getElementById('cartFreeTxt'),fill=document.getElementById('cartFreeFill');
   if(free){
     fill.style.width=Math.min(100,sum/FREE*100)+'%';
     if(sum>=FREE){free.classList.add('done');txt.innerHTML='🎉 Поздравляем — <b>доставка бесплатно!</b>';}
     else{free.classList.remove('done');txt.innerHTML=`🚚 До бесплатной доставки: ещё <b>${(FREE-sum).toLocaleString('ru')} ₽</b>`;}
   }
+}
+function applyPromo(){
+  const inp=document.getElementById('promoInp'); if(!inp)return;
+  const code=inp.value.trim().toUpperCase();
+  if(!code){showToast('Введите промокод');return;}
+  if(PROMOS[code]){promo=code;localStorage.setItem('bloomPromo',code);showToast(`🎟 Промокод применён: ${PROMOS[code].label}`);renderCartBody();}
+  else{showToast('❌ Промокод не найден');}
 }
 function openCart(){renderCartBody();document.getElementById('cartDrawer').classList.add('open');document.getElementById('cartOv').classList.add('open');document.body.style.overflow='hidden';}
 function closeCart(){document.getElementById('cartDrawer').classList.remove('open');document.getElementById('cartOv').classList.remove('open');document.body.style.overflow='';}
@@ -1162,16 +1218,45 @@ function proceedCheckout(){closeCart();openModal();}
 function openModal(){document.getElementById('modalOv').classList.add('open');document.getElementById('modalForm').style.display='block';document.getElementById('modalOk').classList.remove('show');document.body.style.overflow='hidden';}
 function closeModal(){document.getElementById('modalOv').classList.remove('open');document.body.style.overflow='';}
 function handleMOv(e){if(e.target===document.getElementById('modalOv'))closeModal();}
+const SHOP_PHONE='79001234567';
 function submitOrder(){
   const n=document.getElementById('fName').value.trim(),ph=document.getElementById('fPhone').value.trim();
   if(!n||!ph){showToast('⚠️ Заполните имя и телефон');return;}
+  const addr=document.getElementById('fAddr').value.trim(),note=document.getElementById('fNote').value.trim();
+  const sum=cartSum(),disc=PROMOS[promo]?Math.round(sum*PROMOS[promo].off):0,total=sum-disc;
+  let lines=['🌸 *Новый заказ — Bloom*','',`👤 Имя: ${n}`,`📞 Телефон: ${ph}`];
+  if(addr)lines.push(`📍 Адрес: ${addr}`);
+  if(note)lines.push(`📝 Пожелания: ${note}`);
+  lines.push('','🛒 *Состав заказа:*');
+  if(cart.length){cart.forEach(c=>{const p=findP(c.id);if(p)lines.push(`• ${p.n} × ${c.qty} — ${(p.price*c.qty).toLocaleString('ru')} ₽`);});}
+  else lines.push('(уточнить у клиента)');
+  if(disc>0)lines.push('',`🎟 Промокод ${promo}: −${disc.toLocaleString('ru')} ₽`);
+  lines.push('',`💰 *Итого: ${total.toLocaleString('ru')} ₽*`);
+  const url='https://wa.me/'+SHOP_PHONE+'?text='+encodeURIComponent(lines.join('\n'));
+  window.open(url,'_blank');
   document.getElementById('modalForm').style.display='none';document.getElementById('modalOk').classList.add('show');
-  cart=[];saveCart();updateCartUI();setTimeout(closeModal,4000);
+  cart=[];saveCart();updateCartUI();promo='';localStorage.removeItem('bloomPromo');setTimeout(closeModal,5000);
 }
 
-function toggleWish(btn){
-  if(btn.classList.contains('liked')){btn.classList.remove('liked');btn.textContent='🤍';}
-  else{btn.classList.add('liked');btn.textContent='❤️';showToast('❤️ Добавлено в избранное');}
+function toggleWish(id,btn){
+  const i=wish.indexOf(id);
+  if(i>-1){wish.splice(i,1);showToast('Удалено из избранного');}
+  else{wish.push(id);showToast('❤️ Добавлено в избранное');}
+  localStorage.setItem('bloomWish',JSON.stringify(wish));
+  const liked=wish.includes(id);
+  document.querySelectorAll(`.pcard[data-id="${id}"] .pcard-wish`).forEach(b=>{b.classList.toggle('liked',liked);b.textContent=liked?'❤️':'🤍';});
+  updateWishUI();
+  if(curCat==='wish')renderProducts();
+}
+function updateWishUI(){
+  const b=document.getElementById('wbadge');
+  if(b){if(wish.length){b.textContent=wish.length;b.classList.add('show');}else b.classList.remove('show');}
+}
+function openWishlist(){
+  if(!wish.length){showToast('🤍 В избранном пока пусто');}
+  document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('active'));
+  curCat='wish'; renderProducts();
+  document.getElementById('catalog').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function toggleMenu(){document.getElementById('mmenu').classList.toggle('open');document.getElementById('burger').classList.toggle('open');}
@@ -1434,7 +1519,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 // INIT
 document.addEventListener('DOMContentLoaded',()=>{
   renderBento(); renderProducts(); renderReviews();
-  updateCartUI(); initReveal(); initCounters();
+  updateCartUI(); updateWishUI(); initReveal(); initCounters();
   spawnPetals(); renderBuilder();
   tickCountdown(); setInterval(tickCountdown,1000);
   const ht=document.getElementById('heroTitle');
